@@ -1,0 +1,13 @@
+date=2026-10-22T11:16:51.028156800+09:00
+java=26.0.2+10
+vm=OpenJDK 64-Bit Server VM
+os=Windows 10 amd64
+processors=4
+files=64
+expectedWords=128000
+warmups=2
+runs=5
+inputSha256=74591aaf6ac1c1088ac232bf4b446789dd1e0b1877ad353e1b30dabc45ef5e19
+normalization=Unicode letters/digits, Locale.ROOT
+timed=file listing, UTF-8 reading, normalization, counting, pool lifecycle, merging
+cache=OS file cache is not cleared; variants run sequentially in listed order

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Lab2" default="run" basedir=".">
+    <property name="run.args" value=""/>
+    <property name="data.dir" value="generated-data/default"/>
+    <property name="generator.args" value="${data.dir} 128 250000 500"/>
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src/main/java" destdir="build/classes" release="21" encoding="UTF-8" includeantruntime="false"/>
+    </target>
+    <target name="check-data">
+        <available file="${data.dir}/expected-statistics.txt" property="data.exists"/>
+    </target>
+    <target name="generate-if-missing" depends="compile,check-data" unless="data.exists">
+        <java classname="ru.student.lab2.TestDataGenerator" fork="true" failonerror="true" maxmemory="1g">
+            <classpath path="build/classes"/>
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <arg line="${generator.args}"/>
+        </java>
+    </target>
+    <target name="generate" depends="compile">
+        <java classname="ru.student.lab2.TestDataGenerator" fork="true" failonerror="true" maxmemory="1g">
+            <classpath path="build/classes"/>
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <arg line="${generator.args}"/>
+        </java>
+    </target>
+    <target name="run" depends="compile,generate-if-missing">
+        <java classname="ru.student.lab2.Main" fork="true" failonerror="true" maxmemory="1g">
+            <classpath path="build/classes"/>
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+            <jvmarg value="-Dstderr.encoding=UTF-8"/>
+            <arg value="--data=${data.dir}"/>
+            <arg line="${run.args}"/>
+        </java>
+    </target>
+    <target name="test" depends="compile">
+        <mkdir dir="build/test-classes"/>
+        <javac srcdir="src/test/java" destdir="build/test-classes" release="21" encoding="UTF-8" includeantruntime="false">
+            <classpath path="build/classes"/>
+        </javac>
+        <java classname="ru.student.lab2.SelfTest" fork="true" failonerror="true">
+            <classpath path="build/classes;build/test-classes"/>
+            <jvmarg value="-Dstdout.encoding=UTF-8"/>
+        </java>
+    </target>
+    <target name="jar" depends="compile">
+        <mkdir dir="dist"/>
+        <jar destfile="dist/Lab2.jar" basedir="build/classes">
+            <manifest><attribute name="Main-Class" value="ru.student.lab2.Main"/></manifest>
+        </jar>
+    </target>
+    <target name="clean"><delete dir="build"/><delete dir="dist"/></target>
+    <target name="rebuild" depends="clean,jar"/>
+</project>

@@ -1,0 +1,14 @@
+build/
+.tools/
+dist/
+target/
+generated-data/
+nbproject/private/
+.idea/
+*.iml
+*.class
+__pycache__/
+results/latest/
+results/raw/
+.DS_Store
+Thumbs.db
